@@ -1,0 +1,810 @@
+{
+	"info": {
+		"_postman_id": "9d7d7e8d-148a-4805-a4c9-661152694a64",
+		"name": "DummyJson Cart Json",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "559067"
+	},
+	"item": [
+		{
+			"name": "Get All Carts Schema Check",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let response = pm.response.json();",
+							"let maxResponseTime = parseInt(pm.environment.get('maxResponseTime'));",
+							"let cartsArray = response.carts",
+							"let productArray = response.carts[0].products",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"\tpm.response.to.have.status(200);});",
+							"",
+							"pm.test(`Response returns in under ${maxResponseTime}ms`, function() {",
+							"pm.response.to.have.responseTime.below(maxResponseTime)",
+							"});",
+							"",
+							"const schema = {",
+							"  \"type\": \"object\",",
+							"  \"properties\": {",
+							"    \"carts\": {",
+							"      \"type\": \"array\",",
+							"      \"items\": {",
+							"        \"type\": \"object\",",
+							"        \"properties\": {",
+							"          \"id\": { \"type\": \"integer\" },",
+							"          \"products\": {",
+							"            \"type\": \"array\",",
+							"            \"items\": {",
+							"              \"type\": \"object\",",
+							"              \"properties\": {",
+							"                \"id\": { \"type\": \"integer\" },",
+							"                \"title\": { \"type\": \"string\" },",
+							"                \"price\": { \"type\": \"number\" },",
+							"                \"quantity\": { \"type\": \"integer\" },",
+							"                \"total\": { \"type\": \"number\" },",
+							"                \"discountPercentage\": { \"type\": \"number\" },",
+							"                \"discountedTotal\": { \"type\": \"number\" },",
+							"                \"thumbnail\": { \"type\": \"string\", \"format\": \"uri\" }",
+							"              },",
+							"              \"required\": [",
+							"                \"id\",",
+							"                \"title\",",
+							"                \"price\",",
+							"                \"quantity\",",
+							"                \"total\",",
+							"                \"discountPercentage\",",
+							"                \"discountedTotal\",",
+							"                \"thumbnail\"",
+							"              ]",
+							"            }",
+							"          },",
+							"          \"total\": { \"type\": \"number\" },",
+							"          \"discountedTotal\": { \"type\": \"number\" },",
+							"          \"userId\": { \"type\": \"integer\" },",
+							"          \"totalProducts\": { \"type\": \"integer\" },",
+							"          \"totalQuantity\": { \"type\": \"integer\" }",
+							"        },",
+							"        \"required\": [",
+							"          \"id\",",
+							"          \"products\",",
+							"          \"total\",",
+							"          \"discountedTotal\",",
+							"          \"userId\",",
+							"          \"totalProducts\",",
+							"          \"totalQuantity\"",
+							"        ]",
+							"      }",
+							"    },",
+							"    \"total\": { \"type\": \"integer\" },",
+							"    \"skip\": { \"type\": \"integer\" },",
+							"    \"limit\": { \"type\": \"integer\" }",
+							"  },",
+							"  \"required\": [\"carts\", \"total\", \"skip\", \"limit\"]",
+							"}",
+							"",
+							"pm.test('Validating schema', () => {",
+							"    pm.response.to.have.jsonSchema(schema);",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/carts",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"carts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Carts Loop",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let response = pm.response.json();",
+							"let maxResponseTime = parseInt(pm.environment.get('maxResponseTime'));",
+							"let cartsArray = response.carts",
+							"let productArray = response.carts[0].products",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"\tpm.response.to.have.status(200);});",
+							"",
+							"pm.test(`Response returns in under ${maxResponseTime}ms`, function() {",
+							"pm.response.to.have.responseTime.below(maxResponseTime)",
+							"});",
+							"",
+							"",
+							"",
+							"productArray.forEach(function (productArray) {",
+							"pm.test(`productId: ${productArray.id} should have an id which is a number`, function () {",
+							"    pm.expect(productArray.id).to.be.a('number').and.is.not.null",
+							"    });",
+							"});",
+							"",
+							"productArray.forEach(function (productArray) {",
+							"    pm.test(`productId: ${productArray.id} should have a title which is a number`, function () {",
+							"        pm.expect(productArray.title).to.be.a('string').and.is.not.empty",
+							"    });",
+							"});",
+							"",
+							"productArray.forEach(function (productArray) {",
+							"    pm.test(`productId: ${productArray.id} should have price which is a number`, function () {",
+							"        pm.expect(productArray.price).to.be.a('number').and.is.not.null",
+							"    });",
+							"});",
+							"",
+							"productArray.forEach(function (productArray) {",
+							"    pm.test(`productId: ${productArray.id} should have quantity which is a number`, function () {",
+							"        pm.expect(productArray.quantity).to.be.a('number').and.is.not.null",
+							"    });",
+							"});",
+							"",
+							"productArray.forEach(function (productArray) {",
+							"    pm.test(`productId: ${productArray.id} should have total which is a number`, function () {",
+							"        pm.expect(productArray.total).to.be.a('number').and.is.not.null",
+							"    });",
+							"});",
+							"",
+							"productArray.forEach(function (productArray) {",
+							"    pm.test(`productId: ${productArray.id} should have discountPercentage which is a number`, function () {",
+							"        pm.expect(productArray.discountPercentage).to.be.a('number').and.is.not.null",
+							"    });",
+							"});",
+							"",
+							"productArray.forEach(function (productArray) {",
+							"    pm.test(`productId: ${productArray.id} should have discountedTotal which is a number`, function () {",
+							"        pm.expect(productArray.discountedTotal).to.be.a('number').and.is.not.null",
+							"    });",
+							"});",
+							"",
+							"productArray.forEach(function (productArray) {",
+							"    pm.test(`productId: ${productArray.id} should have thumbnail which is a string`, function () {",
+							"        pm.expect(productArray.thumbnail).to.be.a('string').and.satisfy(msg => msg.startsWith('https://'));",
+							"    });",
+							"});",
+							"",
+							"productArray.forEach(function (productArray) {",
+							"    pm.test(`productId: ${productArray.id} should have thumbnail which is a string`, function () {",
+							"        pm.expect(productArray.thumbnail).to.be.a('string').and.satisfy(msg => msg.startsWith('https://'));",
+							"    });",
+							"});",
+							"",
+							"cartsArray.forEach(function (cartsArray) {",
+							"    pm.test(`productId: ${cartsArray.id} should have total which is a number`, function () {",
+							"        pm.expect(cartsArray.total).to.be.a('number').and.is.not.null",
+							"    });",
+							"});",
+							"",
+							"cartsArray.forEach(function (cartsArray) {",
+							"    pm.test(`productId: ${cartsArray.id} should have discountedTotal which is a number`, function () {",
+							"        pm.expect(cartsArray.discountedTotal).to.be.a('number').and.is.not.null",
+							"    });",
+							"});",
+							"",
+							"cartsArray.forEach(function (cartsArray) {",
+							"    pm.test(`productId: ${cartsArray.id} should have userId which is a number`, function () {",
+							"        pm.expect(cartsArray.userId).to.be.a('number').and.is.not.null",
+							"    });",
+							"});",
+							"",
+							"cartsArray.forEach(function (cartsArray) {",
+							"    pm.test(`productId: ${cartsArray.id} should have totalProducts which is a number`, function () {",
+							"        pm.expect(cartsArray.totalProducts).to.be.a('number').and.is.not.null",
+							"    });",
+							"});",
+							"",
+							"cartsArray.forEach(function (cartsArray) {",
+							"    pm.test(`productId: ${cartsArray.id} should have totalQuantity which is a number`, function () {",
+							"        pm.expect(cartsArray.totalQuantity).to.be.a('number').and.is.not.null",
+							"    });",
+							"});",
+							"",
+							"pm.test(`total carts is present and is a int`, function() {",
+							"    pm.expect(response.total).to.be.a('number').is.not.null",
+							"",
+							"})",
+							"",
+							"pm.test(`skip carts is present and is a int`, function() {",
+							"    pm.expect(response.skip).to.be.a('number').is.not.null",
+							"",
+							"})",
+							"",
+							"pm.test(`limit carts is present and is a int`, function() {",
+							"    pm.expect(response.skip).to.be.a('number').is.not.null",
+							"",
+							"})",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/carts",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"carts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add a cart",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let response = pm.response.json();",
+							"let maxResponseTime = parseInt(pm.environment.get('maxResponseTime'));",
+							"let productsArray = response.products",
+							"",
+							"pm.test(\"Status response returns a 201 created\", function () {",
+							"\tpm.response.to.have.status(201);});",
+							"",
+							"pm.test(`Response returns in under ${maxResponseTime}ms`, function() {",
+							"pm.response.to.have.responseTime.below(maxResponseTime)",
+							"});",
+							"",
+							"const schema = {",
+							"    \"type\": \"object\",",
+							"    \"properties\": {",
+							"      \"id\": { \"type\": \"integer\" },",
+							"      \"products\": {",
+							"        \"type\": \"array\",",
+							"        \"items\": {",
+							"          \"type\": \"object\",",
+							"          \"properties\": {",
+							"            \"id\": { \"type\": \"integer\" },",
+							"            \"title\": { \"type\":[ \"string\"] },",
+							"            \"price\": { \"type\": \"number\" },",
+							"            \"quantity\": { \"type\": \"integer\" },",
+							"            \"total\": { \"type\": \"number\" },",
+							"            \"discountPercentage\": { \"type\": \"number\" },",
+							"            \"discountedPrice\": { \"type\": \"number\" },",
+							"            \"thumbnail\": { \"type\": \"string\", \"format\": \"uri\" }",
+							"          },",
+							"          \"required\": [",
+							"            \"id\",",
+							"            \"title\",",
+							"            \"price\",",
+							"            \"quantity\",",
+							"            \"total\",",
+							"            \"discountPercentage\",",
+							"            \"discountedPrice\",",
+							"            \"thumbnail\"",
+							"          ]",
+							"        }",
+							"      },",
+							"      \"total\": { \"type\": \"number\" },",
+							"      \"discountedTotal\": { \"type\": \"number\" },",
+							"      \"userId\": { \"type\": \"integer\" },",
+							"      \"totalProducts\": { \"type\": \"integer\" },",
+							"      \"totalQuantity\": { \"type\": \"integer\" }",
+							"    },",
+							"    \"required\": [",
+							"      \"id\",",
+							"      \"products\",",
+							"      \"total\",",
+							"      \"discountedTotal\",",
+							"      \"userId\",",
+							"      \"totalProducts\",",
+							"      \"totalQuantity\"",
+							"    ]",
+							"  }",
+							"  ",
+							"//  Verifies the schema is valid",
+							"pm.test('Validating schema', () => {",
+							"    pm.response.to.have.jsonSchema(schema);",
+							"})",
+							"",
+							"// Loops through and ensure's that the product id in the request are present in the response",
+							"productsArray.forEach(function (productsArray) {",
+							"pm.test(`productId: ${productsArray.id} should have an id which is a number`, function () {",
+							"    pm.expect(productsArray.id).to.be.a('number').and.oneOf([98,144])",
+							"    });",
+							"});",
+							"",
+							"// Loops through and ensures that the title is not empty ",
+							"productsArray.forEach(function (productsArray) {",
+							"pm.test(`productId: ${productsArray.title} should have an title which is a string and not empty`, function () {",
+							"    pm.expect(productsArray.title).not.to.be.empty",
+							"    });",
+							"});",
+							"",
+							"// Ensures that the items in the array are equal to number of products in the request array",
+							"pm.test(`products array should only contain 2 products`, function () {",
+							"    pm.expect(productsArray).to.be.a('array').and.length(2)",
+							"});",
+							"",
+							"//  Verifies that the User Id matches that in the request body",
+							"pm.test(`UserId maatches the request body userId`, function () {",
+							"    pm.expect(response.userId).to.be.a('number').and.to.eql(1)",
+							"});",
+							"",
+							"//  Verifies that the quantity matches that of the request quantity",
+							"pm.test(\"Verify item with id: 144 has the correct passed values from the request\", function () {",
+							"    const product1 = productsArray.find(p => p.id === 144);",
+							"    pm.expect(product1, 'Product with id: 144 should exist').to.not.be.undefined;",
+							"    if (product1) {",
+							"        pm.expect(product1.quantity, 'Quantity should be 1').to.eql(1);    ",
+							"    }",
+							"\tpm.expect(response.totalQuantity).to.be.eq(5)",
+							"});",
+							"",
+							"//  Verifies that the quantity matches that of the request quantity",
+							"pm.test(\"Verify item with id: 98 has the correct passed values from the request\", function () {",
+							"        // Find the product with id: 6",
+							"    const product1 = productsArray.find(p => p.id === 98);",
+							"    // Assert that the product exists",
+							"    pm.expect(product1, 'Product with id: 6 should exist').to.not.be.undefined;",
+							"    // Assert that the product's values match the expected values",
+							"    if (product1) {",
+							"        pm.expect(product1.quantity, 'Quantity should be 1').to.eql(4);",
+							"    }",
+							"});",
+							"",
+							"//  Verifies that the total products is equal to number of products in the request",
+							"pm.test(`TotalProducts should total 2`, function () {",
+							"    pm.expect(response.totalProducts).to.be.a('number').and.to.eql(2)",
+							"});",
+							"",
+							"// Verfies that the total discount is correctly calculated",
+							"pm.test(`discountedTotal should be equal to combined discountedPrice`, function () {",
+							"\tlet totalPrice = productsArray[0].discountedPrice + productsArray[1].discountedPrice",
+							"    pm.expect(response.discountedTotal).to.be.eq(totalPrice)",
+							"});",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n      \"userId\": 1,\n      \"products\": [\n        {\n          \"id\": 144,\n          \"quantity\": 4\n        },\n        {\n          \"id\": 98,\n          \"quantity\": 1\n        }\n      ]\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/carts/add",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"carts",
+						"add"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Sim Title Failure",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n      \"userId\": 1,\n      \"products\": [\n        {\n          \"id\": 144,\n          \"quantity\": 4\n        },\n        {\n          \"id\": 98,\n          \"quantity\": 1\n        }\n      ]\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{mockbaseURL}}/carts/add",
+							"host": [
+								"{{mockbaseURL}}"
+							],
+							"path": [
+								"carts",
+								"add"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 51,\n    \"products\": [\n        {\n            \"id\": 98,\n            \"title\": \"\",\n            \"price\": 13999.99,\n            \"quantity\": 4,\n            \"total\": 55999.96,\n            \"discountPercentage\": 0.82,\n            \"discountedPrice\": 55541,\n            \"thumbnail\": \"https://cdn.dummyjson.com/products/images/mens-watches/Rolex%20Submariner%20Watch/thumbnail.png\"\n        },\n        {\n            \"id\": 144,\n            \"title\": \"Cricket Helmet\",\n            \"price\": 44.99,\n            \"quantity\": 1,\n            \"total\": 44.99,\n            \"discountPercentage\": 10.75,\n            \"discountedPrice\": 40,\n            \"thumbnail\": \"https://cdn.dummyjson.com/products/images/sports-accessories/Cricket%20Helmet/thumbnail.png\"\n        }\n    ],\n    \"total\": 56044.95,\n    \"discountedTotal\": 55581,\n    \"userId\": 1,\n    \"totalProducts\": 2,\n    \"totalQuantity\": 5\n}"
+				},
+				{
+					"name": "Sim Price Failure",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n      \"userId\": 1,\n      \"products\": [\n        {\n          \"id\": 144,\n          \"quantity\": 4\n        },\n        {\n          \"id\": 98,\n          \"quantity\": 1\n        }\n      ]\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{mockbaseURL}}/carts/add",
+							"host": [
+								"{{mockbaseURL}}"
+							],
+							"path": [
+								"carts",
+								"add"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 51,\n    \"products\": [\n        {\n            \"id\": 98,\n            \"title\": \"Rolex Submariner Watch\",\n            \"price\": null,\n            \"quantity\": 4,\n            \"total\": null,\n            \"discountPercentage\": null,\n            \"discountedPrice\": null,\n            \"thumbnail\": \"https://cdn.dummyjson.com/products/images/mens-watches/Rolex%20Submariner%20Watch/thumbnail.png\"\n        },\n        {\n            \"id\": 144,\n            \"title\": \"Cricket Helmet\",\n            \"price\": 44.99,\n            \"quantity\": 1,\n            \"total\": 44.99,\n            \"discountPercentage\": 10.75,\n            \"discountedPrice\": 40,\n            \"thumbnail\": \"https://cdn.dummyjson.com/products/images/sports-accessories/Cricket%20Helmet/thumbnail.png\"\n        }\n    ],\n    \"total\": 56044.95,\n    \"discountedTotal\": 55581,\n    \"userId\": 1,\n    \"totalProducts\": 2,\n    \"totalQuantity\": 5\n}"
+				}
+			]
+		},
+		{
+			"name": "Update Cart",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let response = pm.response.json();",
+							"let maxResponseTime = parseInt(pm.environment.get('maxResponseTime'));",
+							"let productsArray = response.products",
+							"",
+							"// Verifies the status code ",
+							"pm.test(\"Status response returns a 200 OK\", function () {",
+							"\tpm.response.to.have.status(200);});",
+							"",
+							"// Verfies that the response is under the expected max response time",
+							"pm.test(`Response returns in under ${maxResponseTime}ms`, function() {",
+							"pm.response.to.have.responseTime.below(maxResponseTime)",
+							"});",
+							"",
+							"const schema = {",
+							"  \"$schema\": \"http://json-schema.org/draft-07/schema#\",",
+							"  \"type\": \"object\",",
+							"  \"properties\": {",
+							"    \"id\": {",
+							"      \"type\": \"integer\",",
+							"      \"example\": 10",
+							"    },",
+							"    \"products\": {",
+							"      \"type\": \"array\",",
+							"      \"items\": {",
+							"        \"type\": \"object\",",
+							"        \"properties\": {",
+							"          \"id\": {",
+							"            \"type\": \"integer\"",
+							"          },",
+							"          \"title\": {",
+							"            \"type\": \"string\"",
+							"          },",
+							"          \"price\": {",
+							"            \"type\": \"number\"",
+							"          },",
+							"          \"quantity\": {",
+							"            \"type\": \"integer\"",
+							"          },",
+							"          \"total\": {",
+							"            \"type\": \"number\"",
+							"          },",
+							"          \"discountPercentage\": {",
+							"            \"type\": \"number\"",
+							"          },",
+							"          \"discountedPrice\": {",
+							"            \"type\": \"integer\"",
+							"          },",
+							"          \"thumbnail\": {",
+							"            \"type\": \"string\",",
+							"            \"format\": \"uri\"",
+							"          }",
+							"        },",
+							"        \"required\": [",
+							"          \"id\",",
+							"          \"title\",",
+							"          \"price\",",
+							"          \"quantity\",",
+							"          \"total\",",
+							"          \"discountPercentage\",",
+							"          \"discountedPrice\",",
+							"          \"thumbnail\"",
+							"        ]",
+							"      }",
+							"    },",
+							"    \"total\": {",
+							"      \"type\": \"number\",",
+							"      \"example\": 29799.859999999997",
+							"    },",
+							"    \"discountedTotal\": {",
+							"      \"type\": \"integer\",",
+							"      \"example\": 25974",
+							"    },",
+							"    \"userId\": {",
+							"      \"type\": \"integer\",",
+							"      \"example\": 160",
+							"    },",
+							"    \"totalProducts\": {",
+							"      \"type\": \"integer\",",
+							"      \"example\": 3",
+							"    },",
+							"    \"totalQuantity\": {",
+							"      \"type\": \"integer\",",
+							"      \"example\": 14",
+							"    }",
+							"  },",
+							"  \"required\": [",
+							"    \"id\",",
+							"    \"products\",",
+							"    \"total\",",
+							"    \"discountedTotal\",",
+							"    \"userId\",",
+							"    \"totalProducts\",",
+							"    \"totalQuantity\"",
+							"  ]",
+							"}",
+							"",
+							"pm.test('Validating schema', () => {",
+							"    pm.response.to.have.jsonSchema(schema);",
+							"})",
+							"",
+							"//  Verify item with id: 6 has the correct passed values from the request ",
+							"pm.test(\"Verifies id 6 exits and right quantity\", function () {",
+							"    const passItemsOnRequest = {",
+							"        id: 6,",
+							"        quantity: 6,",
+							"    };",
+							"    const product = productsArray.find(p => p.id === 6);",
+							"    pm.expect(product, 'Product with id: 6 should exist').to.not.be.undefined;",
+							"    if (product) {",
+							"        pm.expect(product.id, 'Product id should be 6').to.eql(passItemsOnRequest.id);",
+							"        pm.expect(product.quantity, 'Product quantity should be 6').to.eql(passItemsOnRequest.quantity);    ",
+							"    }",
+							"});",
+							"",
+							"// Loops through and ensures that the title is not empty ",
+							"productsArray.forEach(function (productsArray) {",
+							"pm.test(`productId: ${productsArray.title} should have an title which is a string and not empty`, function () {",
+							"    pm.expect(productsArray.title).not.to.be.empty",
+							"    });",
+							"});",
+							"",
+							"//  Verifies that the User Id matches that in the request body",
+							"pm.test(`UserId maatches the request body userId`, function () {",
+							"    pm.expect(response.userId).to.be.a('number').and.not.null",
+							"});",
+							"",
+							"",
+							"//  Verifies that the total products is equal to number of products in the request",
+							"pm.test(`TotalProducts should total 2`, function () {",
+							"    pm.expect(response.totalProducts).to.be.a('number').and.not.null",
+							"});",
+							"",
+							"// Verfies that the total discount is correctly calculated",
+							"pm.test(`discountedTotal should be equal to combined discountedPrice`, function () {",
+							"    const calculatedTotalPrice = productsArray.reduce((sum, product) => {",
+							"        return sum + product.total;",
+							"    }, 0);",
+							"    pm.expect(calculatedTotalPrice).to.be.eql(response.total)",
+							"",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n      \"merge\": true, // this will include existing products in the cart\n      \"products\": [\n        {\n          \"id\": 6,\n          \"quantity\": 6\n        }\n      ]\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/carts/10",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"carts",
+						"10"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Cart",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let response = pm.response.json();",
+							"let maxResponseTime = parseInt(pm.environment.get('maxResponseTime'));",
+							"let productsArray = response.products",
+							"",
+							"// Verifies the status code ",
+							"pm.test(\"Status response returns a 200 OK\", function () {",
+							"\tpm.response.to.have.status(200);});",
+							"",
+							"// Verfies that the response is under the expected max response time",
+							"pm.test(`Response returns in under ${maxResponseTime}ms`, function() {",
+							"pm.response.to.have.responseTime.below(maxResponseTime)",
+							"});",
+							"",
+							"const schema = {",
+							"  \"type\": \"object\",",
+							"  \"properties\": {",
+							"    \"id\": { \"type\": \"integer\" },",
+							"    \"products\": {",
+							"      \"type\": \"array\",",
+							"      \"items\": {",
+							"        \"type\": \"object\",",
+							"        \"properties\": {",
+							"          \"id\": { \"type\": \"integer\" },",
+							"          \"title\": { \"type\": \"string\" },",
+							"          \"price\": { \"type\": \"number\" },",
+							"          \"quantity\": { \"type\": \"integer\" },",
+							"          \"total\": { \"type\": \"number\" },",
+							"          \"discountPercentage\": { \"type\": \"number\" },",
+							"          \"discountedTotal\": { \"type\": \"number\" },",
+							"          \"thumbnail\": { \"type\": \"string\", \"format\": \"uri\" }",
+							"        },",
+							"        \"required\": [",
+							"          \"id\",",
+							"          \"title\",",
+							"          \"price\",",
+							"          \"quantity\",",
+							"          \"total\",",
+							"          \"discountPercentage\",",
+							"          \"discountedTotal\",",
+							"          \"thumbnail\"",
+							"        ]",
+							"      }",
+							"    },",
+							"    \"total\": { \"type\": \"number\" },",
+							"    \"discountedTotal\": { \"type\": \"number\" },",
+							"    \"userId\": { \"type\": \"integer\" },",
+							"    \"totalProducts\": { \"type\": \"integer\" },",
+							"    \"totalQuantity\": { \"type\": \"integer\" },",
+							"    \"isDeleted\": { \"type\": \"boolean\" },",
+							"    \"deletedOn\": { \"type\": \"string\", \"format\": \"date-time\" }",
+							"  },",
+							"  \"required\": [",
+							"    \"id\",",
+							"    \"products\",",
+							"    \"total\",",
+							"    \"discountedTotal\",",
+							"    \"userId\",",
+							"    \"totalProducts\",",
+							"    \"totalQuantity\",",
+							"    \"isDeleted\",",
+							"    \"deletedOn\"",
+							"  ]",
+							"}",
+							"",
+							"pm.test('Validating schema', () => {",
+							"    pm.response.to.have.jsonSchema(schema);",
+							"})",
+							"",
+							"pm.test(`Verifies thatthe isDelete flag is set to true`, () => {",
+							"    pm.expect(response.isDeleted).to.be.true",
+							"    });",
+							"",
+							"pm.test(`Verfifes that the deletedOn is a timestamp`, () => {",
+							"    // Define a regular expression for ISO 8601 timestamp format",
+							"const iso8601Regex = /^(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,3})?Z)$/;",
+							"pm.expect(response.deletedOn).to.match(iso8601Regex, 'The deletedOn field is not in a valid ISO 8601 format');",
+							"})",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/carts/10",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"carts",
+						"10"
+					]
+				},
+				"description": "[https://dummyjson.com/docs/carts#carts-delete](https://dummyjson.com/docs/carts#carts-delete)\n\nDeleting a cart will not delete it into the server.  \nIt will simulate a DELETE request and will return deleted cart with isDeleted & deletedOn keys."
+			},
+			"response": []
+		}
+	]
+}

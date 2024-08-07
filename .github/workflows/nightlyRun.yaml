@@ -1,0 +1,40 @@
+name: Run Postman Newman Tests
+
+on:
+  schedule:
+    - cron: "0 0 * * *" # Runs nightly at midnight UTC
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16" # Set the Node.js version you need
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install Newman
+        run: npm install -g newman
+
+      - name: Run Postman Collection
+        run: |
+          newman run DummyJSONCart.postman_collection.json \
+            --environment DummyJSON.postman_environment.json \
+            --reporters cli,html \
+            --reporter-html-export newman-report.html
+        env:
+          POSTMAN_API_KEY: ${{ secrets.POSTMAN_API_KEY }} # Use this if you need to authenticate with Postman API
+
+      - name: Upload Newman Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: newman-report
+          path: newman-report.html
