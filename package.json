@@ -1,0 +1,15 @@
+{
+  "name": "po-api-postman",
+  "version": "1.0.0",
+  "description": "A project for running Postman Newman tests",
+  "main": "index.js",
+  "scripts": {
+    "test": "newman run DummyJSONCart.postman_collection.json --environment DummyJSON.postman_environment.json --reporters cli,html --reporter-html-export newman-report.html",
+    "postinstall": "npm install -g newman"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "engines": {
+    "node": ">=16"
+  }
+}

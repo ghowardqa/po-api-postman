@@ -26,10 +26,7 @@ jobs:
 
       - name: Run Postman Collection
         run: |
-          newman run /DummyJSONCart.postman_collection.json \
-            --environment /DummyJSON.postman_environment.json \
-            --reporters cli,html \
-            --reporter-html-export newman-report.html
+          npm run test
         env:
           POSTMAN_API_KEY: ${{ secrets.POSTMAN_API_KEY }} # Use this if you need to authenticate with Postman API
 
